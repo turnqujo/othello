@@ -19,10 +19,7 @@ export type BoardState = number[][]
  * Also notifies when game state changes.
  */
 export default class GameStateStore {
-  // @ts-ignore TODO: REMOVE
   private state: GameState
-
-  // @ts-ignore TODO: REMOVE
   private listeners: []
 
   constructor(columns = 8, rows = 8, playerCount = 2) {

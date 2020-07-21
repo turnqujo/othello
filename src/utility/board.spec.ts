@@ -15,8 +15,13 @@ describe('The Board Utility Functions', () => {
   })
 
   it('Should throw if given invalid arguments.', () => {
-    expect(() => buildBoard(-1, -Infinity)).toThrowError('Invalid Board Dimensions.')
-    expect(() => buildBoard(10, Infinity)).toThrowError('Invalid Board Dimensions.')
+    expect(() => buildBoard(0, 0)).toThrowError('Invalid Board Dimensions.')
+    expect(() => buildBoard(-1, 4)).toThrowError('Invalid Board Dimensions.')
+    expect(() => buildBoard(4, -4)).toThrowError('Invalid Board Dimensions.')
+    expect(() => buildBoard(4, Infinity)).toThrowError('Invalid Board Dimensions.')
+    expect(() => buildBoard(Infinity, 4)).toThrowError('Invalid Board Dimensions.')
+    expect(() => buildBoard(4, NaN)).toThrowError('Invalid Board Dimensions.')
+    expect(() => buildBoard(NaN, 4)).toThrowError('Invalid Board Dimensions.')
     expect(() => buildBoard(Infinity, NaN)).toThrowError('Invalid Board Dimensions.')
   })
 })
