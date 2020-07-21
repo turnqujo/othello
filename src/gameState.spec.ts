@@ -19,12 +19,6 @@ describe('The Game State Class.', () => {
     })
   })
 
-  it('Should not allow unexpected mutations of game state.', () => {
-    const subject = new GameStateStore()
-    subject.currentState.hasWon = true
-    expect(subject.currentState.hasWon).toBe(false)
-  })
-
   it('Should accept options when creating a new game.', () => {
     const subject = new GameStateStore(4, 4, 4)
 
@@ -89,5 +83,24 @@ describe('The Game State Class.', () => {
 
     expect(spyA).toBeCalledTimes(2)
     expect(spyB).toBeCalledTimes(1)
+  })
+
+  it('Should not allow unexpected mutations of game state.', async () => {
+    const subject = new GameStateStore()
+    subject.currentState.hasWon = true
+    expect(subject.currentState.hasWon).toBe(false)
+
+    // Add a new listener and force an update to mimic attempted
+    // mutations on data received through a callback listener
+    await new Promise((resolve) => {
+      subject.addUpdateListener((newState) => {
+        newState.currentPlayer = 2
+        resolve()
+      })
+
+      subject.updateState({ hasWon: true })
+    })
+
+    expect(subject.currentState.currentPlayer).toBe(1)
   })
 })
