@@ -1,0 +1,29 @@
+{
+  "name": "othello",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/ndex.ts",
+  "scripts": {
+    "test": "jest",
+    "lint": "prettier"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/turnqujo/othello.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/turnqujo/othello/issues"
+  },
+  "homepage": "https://github.com/turnqujo/othello#readme",
+  "dependencies": {
+    "typescript": "^3.9.7"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.5",
+    "jest": "^26.1.0",
+    "prettier": "^2.0.5",
+    "ts-jest": "^26.1.3"
+  }
+}

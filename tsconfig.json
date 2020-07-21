@@ -1,0 +1,9 @@
+{
+  "exclude": ["node_modules"],
+  "include": ["src/**/*.ts"],
+  "compilerOptions": {
+    "target": "ES6",
+    "noUnusedLocals": true,
+    "alwaysStrict": true
+  }
+}
