@@ -19,13 +19,13 @@ export type BoardState = number[][]
  * Also notifies when game state changes.
  */
 export default class GameStateStore {
-  // @ts-expect-error
+  // @ts-ignore TODO: REMOVE
   private state: GameState
 
-  // @ts-expect-error
+  // @ts-ignore TODO: REMOVE
   private listeners: []
 
-  constructor(columns: number = 8, rows: number = 8, playerCount: number = 2) {
+  constructor(columns = 8, rows = 8, playerCount = 2) {
     this.state = {
       hasWon: false,
       currentPlayer: 1,
@@ -38,15 +38,15 @@ export default class GameStateStore {
     throw new Error('Method not implemented.')
   }
 
-  public updateState(newState: Partial<GameState>) {
+  public updateState(newState: Partial<GameState>): void {
     throw new Error('Method not implemented.')
   }
 
-  public addUpdateListener(cb: (newState: GameState) => void) {
+  public addUpdateListener(cb: (newState: GameState) => void): void {
     throw new Error('Method not implemented.')
   }
 
-  public removeUpdateListener(cb: (newState: GameState) => void) {
+  public removeUpdateListener(cb: (newState: GameState) => void): void {
     throw new Error('Method not implemented.')
   }
 }
