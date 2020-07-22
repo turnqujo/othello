@@ -6,4 +6,7 @@ export default class Scoreboard extends Component {
   constructor(parent: Node) {
     super({ parent, template, style })
   }
+
+  onMounted(): void {}
+  onDestroyed(): void {}
 }
