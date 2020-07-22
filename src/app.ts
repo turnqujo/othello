@@ -1,3 +1,5 @@
-import GameStateStore from './gameState'
+import Scoreboard from './components/scoreboard/scoreboard.component'
 
-console.log(GameStateStore)
+window.onload = () => {
+  new Scoreboard(document.querySelector('.scoreboard'))
+}
