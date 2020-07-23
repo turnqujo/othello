@@ -7,7 +7,7 @@ interface Static {
 }
 
 interface Watched {
-  playerCount: string
+  playerCount: number
   hasWon: boolean
 }
 
@@ -18,7 +18,7 @@ const Scoreboard: Component<Static, Watched> = {
     example: 'WOO HOO!'
   },
   watchedProps: {
-    playerCount: 'N/A',
+    playerCount: 0,
     hasWon: false
   },
   render: (container: HTMLElement, staticProps: Static, watchedProps: Watched) => {

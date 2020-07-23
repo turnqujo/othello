@@ -1,6 +1,6 @@
 import Component from './component'
 import createElementFromString from './createElement'
-import normalizeName from './normalizeName'
+// import normalizeName from './normalizeName'
 
 export default class ComponentManager {
   private readonly parent: Node
@@ -37,33 +37,23 @@ export default class ComponentManager {
 
       this.component.render(parentElement, initialStatic, initialWatched)
 
-      // TODO: This is some absolutely insane code which needs some serious love
-      this.watchedAttributesObserver = new MutationObserver((records: MutationRecord[]) => {
-        const updated = records
-          .filter((record) => record.attributeName.indexOf('data-') === 0)
-          .map((record) => ({
-            [normalizeName(record.attributeName.replace('data-', ''))]: (record.target as HTMLElement).getAttribute(
-              record.attributeName
-            )
-          }))
-          .reduce((acc, curr) => ({ ...acc, ...curr }), {})
+      if (Object.keys(this.component.watchedProps || {}).length > 0) {
+        this.watchedAttributesObserver = new MutationObserver((records: MutationRecord[]) => {
+          // TODO: Check to see if the updated attributes match any watched properties. If none, disregard
+          if (records.filter((record) => record.attributeName.indexOf('data-') === 0).length === 0) {
+            // No relevant attributes changed, disregard
+            return
+          }
 
-        const normalizedWatchedPropMap = Object.keys(this.component.watchedProps)
-          .map((propName) => ({
-            [normalizeName(propName)]: propName
-          }))
-          .reduce((acc, curr) => ({ ...acc, ...curr }), {})
+          this.component.render(
+            parentElement,
+            initialStatic,
+            this.getCurrentPropState(parentElement.dataset, this.component.watchedProps)
+          )
+        })
 
-        const newWatchedProps = {
-          ...this.component.watchedProps,
-          [normalizedWatchedPropMap[Object.keys(updated)[0]]]: updated[Object.keys(updated)[0]]
-        }
-
-        // TODO: This is closing over parentElement and initialStatic - better solution?
-        this.component.render(parentElement, initialStatic, newWatchedProps)
-      })
-
-      this.watchedAttributesObserver.observe(this.parent, { attributes: true })
+        this.watchedAttributesObserver.observe(this.parent, { attributes: true })
+      }
     }
 
     if (this.component.setUp) {
