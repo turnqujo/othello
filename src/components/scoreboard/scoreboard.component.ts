@@ -1,8 +1,14 @@
-import Component from '../../daemon/component'
+import BaseComponent from '../../daemon/component'
 import template from './scoreboard.template.html'
 import style from './scoreboard.style.scss'
 
-export default class Scoreboard extends Component {
+interface test {
+  test: string
+}
+
+export default class Scoreboard extends BaseComponent implements test {
+  test = ''
+
   constructor(parent: Node) {
     super({ parent, template, style })
   }

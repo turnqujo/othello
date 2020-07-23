@@ -6,7 +6,7 @@ interface Props {
   style?: any // TODO: How to type this? style-loader adds additional use / unuse methods
 }
 
-export default abstract class Component {
+export default abstract class BaseComponent {
   private parent: Node
   private template?: string
   private node: HTMLTemplateElement
@@ -32,7 +32,9 @@ export default abstract class Component {
       this.style.use()
     }
 
-    this.setUp()
+    if (this.setUp) {
+      this.setUp()
+    }
   }
 
   // on`Destroyed` should be considered internal; instead, implement `cleanUp` in subclasses.
@@ -41,6 +43,8 @@ export default abstract class Component {
       this.style.unuse()
     }
 
-    this.cleanUp()
+    if (this.cleanUp) {
+      this.cleanUp()
+    }
   }
 }
