@@ -1,4 +1,4 @@
-import Component from '../../tooling/component'
+import Component from '../../daemon/component'
 import template from './scoreboard.template.html'
 import style from './scoreboard.style.scss'
 
@@ -7,6 +7,6 @@ export default class Scoreboard extends Component {
     super({ parent, template, style })
   }
 
-  onMounted(): void {}
-  onDestroyed(): void {}
+  setUp(): void {}
+  cleanUp(): void {}
 }
