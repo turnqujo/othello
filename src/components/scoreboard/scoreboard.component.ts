@@ -22,6 +22,7 @@ const Scoreboard: Component<Static, Watched> = {
     hasWon: false
   },
   render: (container: HTMLElement, staticProps: Static, watchedProps: Watched) => {
+    container.querySelector('.scoreboard__example').innerHTML = staticProps.example
     container.querySelector('.scoreboard__player-count').innerHTML = `${watchedProps.playerCount} Players`
     container.querySelector('.scoreboard__has-won').innerHTML = watchedProps.hasWon ? 'Finished!' : 'In Progress'
   }
