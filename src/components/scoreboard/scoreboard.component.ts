@@ -1,18 +1,29 @@
-import BaseComponent from '../../daemon/component'
 import template from './scoreboard.template.html'
 import style from './scoreboard.style.scss'
+import Component from '../../daemon/component'
 
-interface test {
-  test: string
+interface Static {
+  example: string
 }
 
-export default class Scoreboard extends BaseComponent implements test {
-  test = ''
+interface Watched {
+  playerCount: string
+  hasWon: boolean
+}
 
-  constructor(parent: Node) {
-    super({ parent, template, style })
+const Scoreboard: Component<Static, Watched> = {
+  template,
+  style,
+  staticProps: {
+    example: 'WOO HOO!'
+  },
+  watchedProps: {
+    playerCount: 'N/A',
+    hasWon: false
+  },
+  render: (container: HTMLElement, staticProps: Static, watchedProps: Watched) => {
+    container.querySelector('.scoreboard__player-count').innerHTML = `${watchedProps.playerCount} Players`
+    container.querySelector('.scoreboard__has-won').innerHTML = watchedProps.hasWon ? 'Finished!' : 'In Progress'
   }
-
-  setUp(): void {}
-  cleanUp(): void {}
 }
+export default Scoreboard

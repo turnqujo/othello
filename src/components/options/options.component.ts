@@ -1,12 +1,9 @@
-import BaseComponent from '../../daemon/component'
 import template from './options.template.html'
 import style from './options.style.scss'
+import Component from '../../daemon/component'
 
-export default class Options extends BaseComponent {
-  constructor(parent: Node) {
-    super({ parent, template, style })
-  }
-
-  setUp(): void {}
-  cleanUp(): void {}
+const Options: Component<unknown, unknown> = {
+  template,
+  style
 }
+export default Options

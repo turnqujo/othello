@@ -1,12 +1,9 @@
-import BaseComponent from '../../daemon/component'
 import template from './gameboard.template.html'
 import style from './gameboard.style.scss'
+import Component from '../../daemon/component'
 
-export default class Gameboard extends BaseComponent {
-  constructor(parent: Node) {
-    super({ parent, template, style })
-  }
-
-  setUp(): void {}
-  cleanUp(): void {}
+const Gameboard: Component<unknown, unknown> = {
+  template,
+  style
 }
+export default Gameboard

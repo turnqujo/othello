@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/ndex.ts",
   "scripts": {
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --quiet",
     "test": "jest",
     "lint": "prettier src/**/*.ts --write; eslint src --fix"
   },
