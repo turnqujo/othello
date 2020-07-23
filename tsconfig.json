@@ -4,6 +4,7 @@
     "target": "ES6",
     "noUnusedLocals": true,
     "alwaysStrict": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "esModuleInterop": true
   }
 }
