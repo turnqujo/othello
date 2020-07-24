@@ -2,7 +2,7 @@ import Component from './component'
 import ComponentManager from './componentManager'
 import normalizeName from './normalizeName'
 
-type ComponentLookup = Record<string, Component<any, any>>
+type ComponentLookup = Record<string, Component<any>>
 type ManagerLookup = Record<string, ComponentManager>
 
 interface Options {

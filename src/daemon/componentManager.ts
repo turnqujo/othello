@@ -1,13 +1,12 @@
 import Component from './component'
 import createElementFromString from './createElement'
-// import normalizeName from './normalizeName'
 
 export default class ComponentManager {
   private readonly parent: Node
-  private readonly component: Component<any, any>
+  private readonly component: Component<any>
   private watchedAttributesObserver: MutationObserver
 
-  constructor({ parent, component }: { parent: Node; component: Component<any, any> }) {
+  constructor({ parent, component }: { parent: Node; component: Component<any> }) {
     this.parent = parent
     this.component = component
   }
@@ -25,19 +24,14 @@ export default class ComponentManager {
     if (this.component.render) {
       const parentElement = this.parent as HTMLElement
 
-      const initialStatic =
-        Object.keys(this.component.staticProps || {}).length > 0
-          ? this.getCurrentPropState(parentElement.dataset, this.component.staticProps)
+      const initialProps =
+        Object.keys(this.component.props || {}).length > 0
+          ? this.getCurrentPropState(parentElement.dataset, this.component.props)
           : {}
 
-      const initialWatched =
-        Object.keys(this.component.watchedProps || {}).length > 0
-          ? this.getCurrentPropState(parentElement.dataset, this.component.watchedProps)
-          : {}
+      this.component.render(parentElement, initialProps)
 
-      this.component.render(parentElement, initialStatic, initialWatched)
-
-      if (Object.keys(this.component.watchedProps || {}).length > 0) {
+      if (Object.keys(this.component.props || {}).length > 0) {
         this.watchedAttributesObserver = new MutationObserver((records: MutationRecord[]) => {
           // TODO: Check to see if the updated attributes match any watched properties. If none, disregard
           if (records.filter((record) => record.attributeName.indexOf('data-') === 0).length === 0) {
@@ -45,11 +39,7 @@ export default class ComponentManager {
             return
           }
 
-          this.component.render(
-            parentElement,
-            initialStatic,
-            this.getCurrentPropState(parentElement.dataset, this.component.watchedProps)
-          )
+          this.component.render(parentElement, this.getCurrentPropState(parentElement.dataset, this.component.props))
         })
 
         this.watchedAttributesObserver.observe(this.parent, { attributes: true })

@@ -5,11 +5,19 @@ declare module '*.html' {
   export default value
 }
 
+declare interface SCSSFile {
+  [className: string]: string
+}
+
+declare interface SCSSFileLazy {
+  locals: any
+  use: () => void
+  unuse: () => void
+}
+
 // From here: https://stackoverflow.com/a/41946697
 // Added lazy style loading properties
 declare module '*.scss' {
-  const content: {
-    [className: string]: string
-  }
+  const content: SCSSFileLazy
   export default content
 }

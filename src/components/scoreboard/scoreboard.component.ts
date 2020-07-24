@@ -1,30 +1,25 @@
-import template from './scoreboard.template.html'
-import style from './scoreboard.style.scss'
 import Component from '../../daemon/component'
+import style from './scoreboard.style.scss'
+import template from './scoreboard.template.html'
 
-interface Static {
+interface Props {
   example: string
-}
-
-interface Watched {
   playerCount: number
   hasWon: boolean
 }
 
-const Scoreboard: Component<Static, Watched> = {
+const Scoreboard: Component<Props> = {
   template,
   style,
-  staticProps: {
-    example: 'WOO HOO!'
-  },
-  watchedProps: {
+  props: {
+    example: '',
     playerCount: 0,
     hasWon: false
   },
-  render: (container: HTMLElement, staticProps: Static, watchedProps: Watched) => {
-    container.querySelector('.scoreboard__example').innerHTML = staticProps.example
-    container.querySelector('.scoreboard__player-count').innerHTML = `${watchedProps.playerCount} Players`
-    container.querySelector('.scoreboard__has-won').innerHTML = watchedProps.hasWon ? 'Finished!' : 'In Progress'
+  render: (container: HTMLElement, newProps: Props) => {
+    container.querySelector('.scoreboard__example').innerHTML = newProps.example
+    container.querySelector('.scoreboard__player-count').innerHTML = `${newProps.playerCount} Players`
+    container.querySelector('.scoreboard__has-won').innerHTML = newProps.hasWon ? 'Finished!' : 'In Progress'
   }
 }
 export default Scoreboard
