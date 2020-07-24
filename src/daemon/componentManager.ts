@@ -67,7 +67,7 @@ export default class ComponentManager {
 
   private getCurrentPropState(dataSet: DOMStringMap, props: Record<string, any>): Record<string, any> {
     return Object.keys(props)
-      .map((key) => ({ [key]: dataSet[key] || props[key] }))
+      .map((key) => ({ [key]: eval(dataSet[key] || props[key]) }))
       .reduce((acc, curr) => ({ ...acc, ...curr }), {})
   }
 }
