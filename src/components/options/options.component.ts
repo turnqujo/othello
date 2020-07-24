@@ -10,11 +10,31 @@ const Options: Component<Props> = {
   template,
   style,
   props: {
-    gameInProgress: false
+    gameInProgress: true
   },
-  render: (parent: HTMLElement, newProps: Props) => {
+  events: {
+    onStart: function () {
+      this.container.dispatchEvent(new CustomEvent('on-start'))
+    },
+    onReset: function () {
+      this.container.dispatchEvent(new CustomEvent('on-reset'))
+    }
+  },
+  setUp: function () {
+    this.container.querySelector('.options__set-up button').addEventListener('click', this.events.onStart)
+    this.container.querySelector('.options__reset').addEventListener('click', this.events.onReset)
+  },
+  tearDown: function () {
+    this.container.querySelector('.options__set-up button').removeEventListener('click', this.events.onStart)
+    this.container.querySelector('.options__reset').removeEventListener('click', this.events.onReset)
+  },
+  render: function (newProps: Props) {
     if (newProps.gameInProgress) {
-      parent.querySelector('.options__set-up').classList.add('hidden')
+      this.container.querySelector('.options__set-up').classList.add('hidden')
+      this.container.querySelector('.options__reset').classList.remove('hidden')
+    } else {
+      this.container.querySelector('.options__set-up').classList.remove('hidden')
+      this.container.querySelector('.options__reset').classList.add('hidden')
     }
   }
 }

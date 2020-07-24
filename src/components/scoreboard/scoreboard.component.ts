@@ -16,6 +16,6 @@ const Scoreboard: Component<Props> = {
   },
   setUp: () => {},
   tearDown: () => {},
-  render: (container: HTMLElement, newProps: Props) => {}
+  render: (newProps: Props) => {}
 }
 export default Scoreboard

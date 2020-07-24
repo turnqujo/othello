@@ -1,6 +1,6 @@
 import Component from './component'
 import ComponentManager from './componentManager'
-import normalizeName from './normalizeName'
+import { normalizeName } from './strings'
 
 type ComponentLookup = Record<string, Component<any>>
 type ManagerLookup = Record<string, ComponentManager>
@@ -15,7 +15,7 @@ export default class WatcherDaemon {
 
   constructor(appHandle: Node, options: Options) {
     this.componentLookup = this.normalizeComponentNames(options.components)
-    const appObserver = new MutationObserver((records: MutationRecord[]) => this.handleMutation(records))
+    const appObserver = new MutationObserver(async (records: MutationRecord[]) => await this.handleMutation(records))
     appObserver.observe(appHandle, { childList: true, subtree: true })
     this.instantiateComponents(appHandle.childNodes)
   }
@@ -30,19 +30,19 @@ export default class WatcherDaemon {
     )
   }
 
-  private handleMutation(records: MutationRecord[]) {
+  private async handleMutation(records: MutationRecord[]) {
     for (const record of records) {
       if (record.addedNodes.length > 0) {
-        this.instantiateComponents(record.addedNodes)
+        await this.instantiateComponents(record.addedNodes)
       }
 
       if (record.removedNodes.length > 0) {
-        this.doomComponents(record.removedNodes)
+        await this.doomComponents(record.removedNodes)
       }
     }
   }
 
-  private instantiateComponents(nodeList: NodeList): void {
+  private async instantiateComponents(nodeList: NodeList) {
     for (const componentContainerNode of nodeList) {
       const componentContainerEle = componentContainerNode as HTMLElement
       const dataSet = componentContainerEle.dataset
@@ -61,11 +61,12 @@ export default class WatcherDaemon {
         parent: componentContainerNode,
         component: component
       })
-      this.livingComponents[daemonId].onCreated()
+
+      await this.livingComponents[daemonId].onCreated()
     }
   }
 
-  private doomComponents(nodeList: NodeList) {
+  private async doomComponents(nodeList: NodeList) {
     for (const componentContainerNode of nodeList) {
       const componentContainerEle = componentContainerNode as HTMLElement
       const dataSet = componentContainerEle.dataset

@@ -1,5 +1,6 @@
 import Component from './component'
 import createElementFromString from './createElement'
+import { camelToKebab } from './strings'
 
 export default class ComponentManager {
   private readonly parent: Node
@@ -11,7 +12,7 @@ export default class ComponentManager {
     this.component = component
   }
 
-  public onCreated(): void {
+  public async onCreated() {
     if (this.component.template) {
       const templateEle = createElementFromString(this.component.template) as HTMLTemplateElement
       this.parent.appendChild(templateEle.content)
@@ -19,6 +20,14 @@ export default class ComponentManager {
 
     if (this.component.style) {
       this.component.style.use()
+    }
+
+    this.component.container = this.parent as HTMLElement
+
+    if (Object.keys(this.component.events || {}).length > 0) {
+      for (const key in this.component.events) {
+        this.component.events[key] = this.component.events[key].bind(this.component)
+      }
     }
 
     if (this.component.render) {
@@ -29,29 +38,27 @@ export default class ComponentManager {
           ? this.getCurrentPropState(parentElement.dataset, this.component.props)
           : {}
 
-      this.component.render(parentElement, initialProps)
+      this.component.render(initialProps)
 
       if (Object.keys(this.component.props || {}).length > 0) {
-        this.watchedAttributesObserver = new MutationObserver((records: MutationRecord[]) => {
-          // TODO: Check to see if the updated attributes match any watched properties. If none, disregard
-          if (records.filter((record) => record.attributeName.indexOf('data-') === 0).length === 0) {
-            // No relevant attributes changed, disregard
-            return
-          }
+        this.watchedAttributesObserver = new MutationObserver(() =>
+          this.component.render(this.getCurrentPropState(parentElement.dataset, this.component.props))
+        )
 
-          this.component.render(parentElement, this.getCurrentPropState(parentElement.dataset, this.component.props))
+        const attributeFilter = Object.keys(this.component.props).map((attr) => `data-${camelToKebab(attr)}`)
+        this.watchedAttributesObserver.observe(this.parent, {
+          attributes: true,
+          attributeFilter
         })
-
-        this.watchedAttributesObserver.observe(this.parent, { attributes: true })
       }
     }
 
     if (this.component.setUp) {
-      this.component.setUp()
+      await this.component.setUp()
     }
   }
 
-  public onDestroyed(): void {
+  public async onDestroyed() {
     if (this.component.style) {
       this.component.style.unuse()
     }
@@ -61,10 +68,12 @@ export default class ComponentManager {
     }
 
     if (this.component.tearDown) {
-      this.component.tearDown()
+      await this.component.tearDown()
     }
   }
 
+  // TODO: Eval is used here without regard to the origin of the code.
+  // Totally why this isn't a good idea for real-world use
   private getCurrentPropState(dataSet: DOMStringMap, props: Record<string, any>): Record<string, any> {
     return Object.keys(props)
       .map((key) => ({ [key]: eval(dataSet[key] || props[key]) }))
