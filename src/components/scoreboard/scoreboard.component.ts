@@ -7,7 +7,7 @@ interface Props {
   hasWon: boolean
 }
 
-const Scoreboard: Component<Props> = {
+const Scoreboard: () => Component<Props> = () => ({
   template,
   style,
   props: {
@@ -17,5 +17,5 @@ const Scoreboard: Component<Props> = {
   setUp: () => {},
   tearDown: () => {},
   render: (newProps: Props) => {}
-}
+})
 export default Scoreboard

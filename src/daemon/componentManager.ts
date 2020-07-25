@@ -15,7 +15,7 @@ export default class ComponentManager {
   public async onCreated() {
     if (this.component.template) {
       const templateEle = createElementFromString(this.component.template) as HTMLTemplateElement
-      this.parent.appendChild(templateEle.content)
+      this.parent.appendChild(templateEle.content.cloneNode(true))
     }
 
     if (this.component.style) {

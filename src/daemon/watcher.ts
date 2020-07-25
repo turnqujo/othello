@@ -2,7 +2,7 @@ import Component from './component'
 import ComponentManager from './componentManager'
 import { normalizeName } from './strings'
 
-type ComponentLookup = Record<string, Component<any>>
+type ComponentLookup = Record<string, () => Component<any>>
 type ManagerLookup = Record<string, ComponentManager>
 
 interface Options {
@@ -59,7 +59,7 @@ export default class WatcherDaemon {
       componentContainerEle.setAttribute('data-daemon-id', daemonId)
       this.livingComponents[daemonId] = new ComponentManager({
         parent: componentContainerNode,
-        component: component
+        component: component()
       })
 
       await this.livingComponents[daemonId].onCreated()

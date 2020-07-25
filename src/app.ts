@@ -19,10 +19,12 @@ window.onload = () => {
   document.querySelector('.options__container').addEventListener('on-reset', () => {
     const optionsContainer = document.querySelector('.options__container') as HTMLElement
     optionsContainer.dataset.gameInProgress = 'false'
+    console.log('here A')
   })
 
   document.querySelector('.options__container').addEventListener('on-start', () => {
     const optionsContainer = document.querySelector('.options__container') as HTMLElement
     optionsContainer.dataset.gameInProgress = 'true'
+    console.log('here B')
   })
 }

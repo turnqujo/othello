@@ -6,7 +6,7 @@ interface Props {
   gameInProgress: boolean
 }
 
-const Options: Component<Props> = {
+const Options: () => Component<Props> = () => ({
   template,
   style,
   props: {
@@ -14,9 +14,11 @@ const Options: Component<Props> = {
   },
   events: {
     onStart: function () {
+      console.log(this.container)
       this.container.dispatchEvent(new CustomEvent('on-start'))
     },
     onReset: function () {
+      console.log(this.container)
       this.container.dispatchEvent(new CustomEvent('on-reset'))
     }
   },
@@ -37,5 +39,5 @@ const Options: Component<Props> = {
       this.container.querySelector('.options__reset').classList.add('hidden')
     }
   }
-}
+})
 export default Options
