@@ -26,11 +26,19 @@ export default class ComponentManager {
 
     if (Object.keys(this.component.events || {}).length > 0) {
       for (const key in this.component.events) {
+        // TODO: This, for whatever reason, isn't working as expected. this.state resolves to null
         this.component.events[key] = this.component.events[key].bind(this.component)
       }
     }
 
-    if (this.component.render) {
+    if (Object.keys(this.component.elements || {}).length > 0) {
+      this.component.elements = new Proxy(this.component.elements, {
+        // Modify the getter's contexts so that "this" resolves to the component, but otherwise don't change the getter
+        get: (target: Record<string, () => HTMLElement>, prop: string) => Reflect.get(target, prop, this.component)
+      })
+    }
+
+    if (this.component.update) {
       const parentElement = this.parent as HTMLElement
 
       const initialProps =
@@ -38,11 +46,11 @@ export default class ComponentManager {
           ? this.getCurrentPropState(parentElement.dataset, this.component.props)
           : {}
 
-      this.component.render(initialProps)
+      this.component.update(initialProps)
 
       if (Object.keys(this.component.props || {}).length > 0) {
         this.watchedAttributesObserver = new MutationObserver(() =>
-          this.component.render(this.getCurrentPropState(parentElement.dataset, this.component.props))
+          this.component.update(this.getCurrentPropState(parentElement.dataset, this.component.props))
         )
 
         const attributeFilter = Object.keys(this.component.props).map((attr) => `data-${camelToKebab(attr)}`)

@@ -12,32 +12,48 @@ const Options: () => Component<Props> = () => ({
   props: {
     gameInProgress: true
   },
+  state: {
+    numUpdates: 0
+  },
   events: {
     onStart: function () {
-      console.log(this.container)
-      this.container.dispatchEvent(new CustomEvent('on-start'))
+      this.container.dispatchEvent(new CustomEvent('on-start', { detail: this.state.numUpdates }))
     },
     onReset: function () {
-      console.log(this.container)
       this.container.dispatchEvent(new CustomEvent('on-reset'))
     }
   },
+  elements: {
+    get startButton() {
+      return this.container.querySelector('.options__set-up button')
+    },
+    get resetButton() {
+      return this.container.querySelector('.options__reset')
+    },
+    get counter() {
+      return this.container.querySelector('.options__counter')
+    }
+  },
   setUp: function () {
-    this.container.querySelector('.options__set-up button').addEventListener('click', this.events.onStart)
-    this.container.querySelector('.options__reset').addEventListener('click', this.events.onReset)
+    this.elements.startButton.addEventListener('click', this.events.onStart)
+    this.elements.resetButton.addEventListener('click', this.events.onReset)
   },
   tearDown: function () {
-    this.container.querySelector('.options__set-up button').removeEventListener('click', this.events.onStart)
-    this.container.querySelector('.options__reset').removeEventListener('click', this.events.onReset)
+    this.elements.startButton.removeEventListener('click', this.events.onStart)
+    this.elements.resetButton.removeEventListener('click', this.events.onReset)
   },
-  render: function (newProps: Props) {
+  update: function (newProps: Props) {
+    this.state.numUpdates++
+    this.elements.counter.innerText = this.state.numUpdates
+
     if (newProps.gameInProgress) {
-      this.container.querySelector('.options__set-up').classList.add('hidden')
-      this.container.querySelector('.options__reset').classList.remove('hidden')
+      this.elements.startButton.classList.add('hidden')
+      this.elements.resetButton.classList.remove('hidden')
     } else {
-      this.container.querySelector('.options__set-up').classList.remove('hidden')
-      this.container.querySelector('.options__reset').classList.add('hidden')
+      this.elements.startButton.classList.remove('hidden')
+      this.elements.resetButton.classList.add('hidden')
     }
   }
 })
+
 export default Options

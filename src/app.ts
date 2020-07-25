@@ -16,10 +16,10 @@ window.onload = () => {
   })
 
   // TODO: Remove, only for demonstration
-  document.querySelector('.options__container').addEventListener('on-reset', () => {
+  document.querySelector('.options__container').addEventListener('on-reset', (e: CustomEvent) => {
     const optionsContainer = document.querySelector('.options__container') as HTMLElement
     optionsContainer.dataset.gameInProgress = 'false'
-    console.log('here A')
+    console.log('here A', e.detail)
   })
 
   document.querySelector('.options__container').addEventListener('on-start', () => {

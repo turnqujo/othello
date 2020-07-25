@@ -14,8 +14,8 @@ const Scoreboard: () => Component<Props> = () => ({
     playerCount: 0,
     hasWon: false
   },
-  setUp: () => {},
-  tearDown: () => {},
-  render: (newProps: Props) => {}
+  setUp: () => { },
+  tearDown: () => { },
+  update: (newProps: Props) => { }
 })
 export default Scoreboard
