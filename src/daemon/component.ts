@@ -6,11 +6,10 @@ export default interface Component<Props> {
   container?: HTMLElement
 
   // Set by implementation
-  elements?: Record<string, () => HTMLElement>
+  elements?: Record<string, HTMLElement>
+  events?: Record<string, () => void>
   props?: Props
-  state?: Record<string, Serializable>
-  events?: Record<string, Function>
+  onPropsChanged?: (newProps: Props, oldProps?: Props) => void | Promise<void>
   setUp?: () => void | Promise<void>
   tearDown?: () => void | Promise<void>
-  update?: (newProps: Props) => void | Promise<void>
 }

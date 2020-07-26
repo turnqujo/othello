@@ -16,15 +16,13 @@ window.onload = () => {
   })
 
   // TODO: Remove, only for demonstration
+  document.querySelector('.options__container').addEventListener('on-start', (e: CustomEvent) => {
+    const optionsContainer = document.querySelector('.options__container') as HTMLElement
+    optionsContainer.dataset.gameInProgress = 'true'
+  })
+
   document.querySelector('.options__container').addEventListener('on-reset', (e: CustomEvent) => {
     const optionsContainer = document.querySelector('.options__container') as HTMLElement
     optionsContainer.dataset.gameInProgress = 'false'
-    console.log('here A', e.detail)
-  })
-
-  document.querySelector('.options__container').addEventListener('on-start', () => {
-    const optionsContainer = document.querySelector('.options__container') as HTMLElement
-    optionsContainer.dataset.gameInProgress = 'true'
-    console.log('here B')
   })
 }

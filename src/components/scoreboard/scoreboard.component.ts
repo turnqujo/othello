@@ -7,15 +7,14 @@ interface Props {
   hasWon: boolean
 }
 
-const Scoreboard: () => Component<Props> = () => ({
+export default (): Component<Props> => ({
   template,
   style,
   props: {
     playerCount: 0,
     hasWon: false
   },
-  setUp: () => { },
-  tearDown: () => { },
-  update: (newProps: Props) => { }
+  setUp: () => {},
+  tearDown: () => {},
+  onPropsChanged: (newProps: Props) => {}
 })
-export default Scoreboard

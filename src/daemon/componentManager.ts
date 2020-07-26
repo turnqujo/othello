@@ -13,32 +13,20 @@ export default class ComponentManager {
   }
 
   public async onCreated() {
+    this.component.container = this.parent as HTMLElement
+
     if (this.component.template) {
+      // TODO: Maybe load the template into <head> and clone the contents for new, identical components?
       const templateEle = createElementFromString(this.component.template) as HTMLTemplateElement
-      this.parent.appendChild(templateEle.content.cloneNode(true))
+      // No need to clone, since we're creating a new element every time
+      this.parent.appendChild(templateEle.content)
     }
 
     if (this.component.style) {
       this.component.style.use()
     }
 
-    this.component.container = this.parent as HTMLElement
-
-    if (Object.keys(this.component.events || {}).length > 0) {
-      for (const key in this.component.events) {
-        // TODO: This, for whatever reason, isn't working as expected. this.state resolves to null
-        this.component.events[key] = this.component.events[key].bind(this.component)
-      }
-    }
-
-    if (Object.keys(this.component.elements || {}).length > 0) {
-      this.component.elements = new Proxy(this.component.elements, {
-        // Modify the getter's contexts so that "this" resolves to the component, but otherwise don't change the getter
-        get: (target: Record<string, () => HTMLElement>, prop: string) => Reflect.get(target, prop, this.component)
-      })
-    }
-
-    if (this.component.update) {
+    if (this.component.onPropsChanged) {
       const parentElement = this.parent as HTMLElement
 
       const initialProps =
@@ -46,12 +34,16 @@ export default class ComponentManager {
           ? this.getCurrentPropState(parentElement.dataset, this.component.props)
           : {}
 
-      this.component.update(initialProps)
+      this.component.onPropsChanged(initialProps)
 
       if (Object.keys(this.component.props || {}).length > 0) {
-        this.watchedAttributesObserver = new MutationObserver(() =>
-          this.component.update(this.getCurrentPropState(parentElement.dataset, this.component.props))
-        )
+        // TODO: This should aggregate changes instead of a simple debounce
+        this.watchedAttributesObserver = new MutationObserver(async () => {
+          const oldProps = { ...this.component.props }
+          const newProps = this.getCurrentPropState(parentElement.dataset, this.component.props)
+          this.component.props = newProps
+          await this.component.onPropsChanged(newProps, oldProps)
+        })
 
         const attributeFilter = Object.keys(this.component.props).map((attr) => `data-${camelToKebab(attr)}`)
         this.watchedAttributesObserver.observe(this.parent, {
@@ -80,8 +72,7 @@ export default class ComponentManager {
     }
   }
 
-  // TODO: Eval is used here without regard to the origin of the code.
-  // Totally why this isn't a good idea for real-world use
+  // TODO: Eval is used here without regard to the origin of the code
   private getCurrentPropState(dataSet: DOMStringMap, props: Record<string, any>): Record<string, any> {
     return Object.keys(props)
       .map((key) => ({ [key]: eval(dataSet[key] || props[key]) }))

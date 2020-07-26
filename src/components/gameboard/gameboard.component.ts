@@ -2,8 +2,7 @@ import template from './gameboard.template.html'
 import style from './gameboard.style.scss'
 import Component from '../../daemon/component'
 
-const Gameboard: () => Component<unknown> = () => ({
+export default (): Component<null> => ({
   template,
   style
 })
-export default Gameboard
