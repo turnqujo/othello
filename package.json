@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/turnqujo/othello#readme",
   "dependencies": {
+    "bulma": "^0.9.0",
     "css-loader": "^3.6.0",
     "eslint-loader": "^4.0.2",
     "raw-loader": "^4.0.1",

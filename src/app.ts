@@ -7,7 +7,7 @@ import appStyle from './theme/index.scss'
 window.onload = () => {
   appStyle.use()
 
-  new WatcherDaemon(document.querySelector('#othello-app'), {
+  new WatcherDaemon(document.getElementById('othello-app'), {
     components: {
       Scoreboard,
       Gameboard,
@@ -16,9 +16,8 @@ window.onload = () => {
   })
 
   // TODO: Remove, only for demonstration
-  document.querySelector('.options__container').addEventListener('on-start', (e: CustomEvent) => {
-    const optionsContainer = document.querySelector('.options__container') as HTMLElement
-    optionsContainer.dataset.gameInProgress = 'true'
+  document.querySelector('.options__container').addEventListener('on-submit', (e: CustomEvent) => {
+    console.log(e.detail)
   })
 
   document.querySelector('.options__container').addEventListener('on-reset', (e: CustomEvent) => {

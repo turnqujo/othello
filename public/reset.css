@@ -25,7 +25,7 @@ time, mark, audio, video {
   border: 0;
   font: inherit;
   font-family: monospace;
-  font-size: inherit;
+  font-size: 14px;
   letter-spacing: 1px;
   margin: 0;
   padding: 0;
@@ -38,9 +38,12 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
   display: block;
 }
+
 body {
   line-height: 1;
+  padding: 1rem;
 }
+
 ol,
 ul {
   list-style: none;
@@ -49,6 +52,7 @@ blockquote,
 q {
   quotes: none;
 }
+
 blockquote:before,
 blockquote:after,
 q:before,

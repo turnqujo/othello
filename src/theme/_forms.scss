@@ -1,0 +1,26 @@
+fieldset {
+  & > legend {
+    font-weight: bold;
+    white-space: nowrap;
+  }
+
+  & .fieldset-content {
+    margin-top: 0.5em;
+    padding-left: 1em;
+  }
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+
+  &__label {
+    margin: 0.5em 0;
+  }
+
+  &__input {
+    appearance: none;
+    padding: 0.5em;
+    border: 1px solid gray;
+  }
+}

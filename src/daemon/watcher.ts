@@ -45,8 +45,14 @@ export default class WatcherDaemon {
   private async instantiateComponents(nodeList: NodeList) {
     for (const componentContainerNode of nodeList) {
       const componentContainerEle = componentContainerNode as HTMLElement
+      if (componentContainerEle.nodeType === 3) {
+        continue
+      }
+
       const dataSet = componentContainerEle.dataset
       if (!dataSet || !dataSet.component) {
+        // TODO: Handle child components of components
+        await this.instantiateComponents(componentContainerEle.childNodes)
         continue
       }
 

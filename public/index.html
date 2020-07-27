@@ -5,14 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Othello</title>
-    <!-- <link rel="stylesheet" href="reset.css" /> -->
-    <script src="bundle.js" async></script>
+    <link rel="stylesheet" href="reset.css" />
+    <script src="bundle.js"></script>
   </head>
-
   <body id="othello-app">
-    <h1>Othello</h1>
-    <div class="scoreboard__container" data-component="scoreboard"></div>
-    <div class="gameboard__container" data-component="gameboard"></div>
-    <div class="options__container" data-component="options" data-game-in-progress="true"></div>
+    <div class="section">
+      <div class="othello__header container">
+        <h1>Othello</h1>
+      </div>
+      <div class="scoreboard__container container" data-component="scoreboard"></div>
+      <div class="gameboard__container container" data-component="gameboard"></div>
+      <div class="options__container container" data-component="options" data-game-in-progress="false"></div>
+    </div>
   </body>
 </html>
